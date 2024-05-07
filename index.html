@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8">
+    <title>Text Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f4f4f4; 
+        }
+        #toolbar { 
+            padding: 10px; 
+            background: #ddd; 
+            text-align: center; 
+        }
+        #editor { 
+            height: 69vh; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            background: white;
+        }
+        button { 
+            margin: 5px; 
+            padding: 10px 15px; 
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        input[type="color"] {
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <button onclick="execCommand('bold')" aria-label="Negrito">Negrito</button>
+        <button onclick="execCommand('italic')" aria-label="Itálico">Itálico</button>
+        <button onclick="execCommand('strikeThrough')" aria-label="Tachado">Tachado</button>
+        <input type="color" onchange="execCommand('foreColor', false, this.value)" aria-label="Selecionar cor de texto">
+        <button onclick="alternarMarcaTexto()" aria-label="Alternar marca-texto">Marca-texto</button>
+    </div>
+    <div contenteditable="true" id="editor"></div>
+    <button onclick="salvarTextoComo()" aria-label="Salvar texto">Salvar</button>
+    <script src="/../renderer.js"></script>
+</body>
+</html>
