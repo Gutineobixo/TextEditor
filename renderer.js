@@ -29,19 +29,26 @@ function execCommand(command, defaultUi = false, value = null) {
 }
 
 function alternarMarcaTexto() {
-    const highlightColor = 'rgba(255, 255, 0, 0.5)';
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    
-    let range = selection.getRangeAt(0);
-    let container = range.commonAncestorContainer;
-    container = container.nodeType === 3 ? container.parentNode : container;
+    const highlightColor = 'rgba(255, 255, 0, 0.5)'; // Cor do marca-texto
+    const selection = window.getSelection(); // Obter a seleção atual
 
-    if (container.style.backgroundColor === highlightColor) {
-        container.style.backgroundColor = ''; 
-    } else {
-        const newSpan = document.createElement('span');
-        newSpan.style.backgroundColor = highlightColor;
-        range.surroundContents(newSpan);
-    }
+    if (!selection.rangeCount || selection.isCollapsed) return; // Não fazer nada se não há seleção ou se ela é um ponto de inserção
+
+    const range = selection.getRangeAt(0); // Obter o range da seleção
+    const selectedText = range.toString(); // Obter o texto selecionado
+
+    if (selectedText.length === 0) return; // Se não há texto selecionado, retorna
+
+    const documentFragment = range.extractContents(); // Extrair o conteúdo da seleção
+    const span = document.createElement('span'); // Criar um novo elemento span
+    span.style.backgroundColor = highlightColor; // Definir a cor de fundo do span
+    span.appendChild(documentFragment); // Adicionar o conteúdo extraído ao span
+
+    range.insertNode(span); // Inserir o span no lugar original
+
+    // Limpar a seleção para evitar múltiplas marcações ao clicar repetidamente
+    selection.removeAllRanges();
+    const newRange = document.createRange(); // Criar um novo range
+    newRange.selectNodeContents(span); // Selecionar o conteúdo do novo span
+    selection.addRange(newRange); // Adicionar o novo range à seleção
 }
